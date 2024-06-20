@@ -21,6 +21,7 @@ const noteSchema = new mongoose.Schema({
 
 const Note = mongoose.model('Note', noteSchema)
 
+// eslint-disable-next-line no-unused-vars
 const note = new Note({
   content: 'Mongoose makes things easy',
   date: new Date(),
