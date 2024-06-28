@@ -1,24 +1,16 @@
 import express from 'express'
-import cors from 'cors'
-import notesData from './notesData.js'
-import { generateId } from './utils.js'
+import notesData from '../notesData.js'
+import { generateId } from '../utils.js'
 
-const app = express()
-const PORT = process.env.PORT || 3001
-
-//MIDDLEWARE
-app.use(express.json())
-app.use(cors())
-
-// ROUTES
+export const notesRouter = express.Router()
 
 // GET all notes
-app.get('/api/notes', (req, res) => {
+notesRouter.get('/notes', (req, res) => {
   res.json(notesData)
 })
 
 // GET single note by id
-app.get('/api/notes/:id', (request, response) => {
+notesRouter.get('/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   const note = notesData.find((note) => note.id === id)
 
@@ -30,7 +22,7 @@ app.get('/api/notes/:id', (request, response) => {
 })
 
 // POST create new note in server
-app.post('/api/notes', (request, response) => {
+notesRouter.post('/notes', (request, response) => {
   const body = request.body
 
   if (!body.content) {
@@ -51,7 +43,7 @@ app.post('/api/notes', (request, response) => {
 })
 
 // DELETE single note by id
-app.delete('/api/notes/:id', (request, response) => {
+notesRouter.delete('/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   const index = notesData.findIndex((note) => note.id === id)
   if (index !== -1) notesData.splice(index, 1)
@@ -60,7 +52,7 @@ app.delete('/api/notes/:id', (request, response) => {
 })
 
 // UPDATE existing note
-app.put('/api/notes/:id', (request, response) => {
+notesRouter.put('/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   const body = request.body
 
@@ -74,8 +66,4 @@ app.put('/api/notes/:id', (request, response) => {
   notesData[noteIndex] = updatedNote
 
   response.json(updatedNote)
-})
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
 })
