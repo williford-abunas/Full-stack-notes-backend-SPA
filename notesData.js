@@ -1,4 +1,4 @@
-export default [
+const notesData = [
   {
     id: 1,
     content: 'HTML is easy',
@@ -18,3 +18,5 @@ export default [
     important: true,
   },
 ]
+
+export default notesData

@@ -12,11 +12,6 @@ app.use(cors())
 
 // ROUTES
 
-// GET home
-app.get('/', (req, res) => {
-  res.send('<h1>Hello World!</h1>')
-})
-
 // GET all notes
 app.get('/api/notes', (req, res) => {
   res.json(notesData)
@@ -58,9 +53,31 @@ app.post('/api/notes', (request, response) => {
 // DELETE single note by id
 app.delete('/api/notes/:id', (request, response) => {
   const id = Number(request.params.id)
-  notes = notesData.filter((note) => note.id !== id)
+  const index = notesData.findIndex((note) => note.id === id)
+  if (index !== -1) notesData.splice(index, 1)
 
   response.status(204).end()
+})
+
+// UPDATE existing note
+app.put('/api/notes/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const body = request.body
+
+  const noteIndex = notesData.findIndex((note) => note.id === id)
+  if (noteIndex === -1) {
+    return response.status(404).json({ error: 'note not found' })
+  }
+
+  const updatedNote = {
+    content: body.content,
+    important: body.important,
+    id: note.id,
+  }
+
+  notesData[index] = updatedNote
+
+  response.json(updatedNote)
 })
 
 app.listen(PORT, () => {
