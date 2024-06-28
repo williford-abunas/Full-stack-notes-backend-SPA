@@ -69,13 +69,9 @@ app.put('/api/notes/:id', (request, response) => {
     return response.status(404).json({ error: 'note not found' })
   }
 
-  const updatedNote = {
-    content: body.content,
-    important: body.important,
-    id: note.id,
-  }
+  const updatedNote = { ...notesData[noteIndex], ...body, id }
 
-  notesData[index] = updatedNote
+  notesData[noteIndex] = updatedNote
 
   response.json(updatedNote)
 })
