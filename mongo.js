@@ -13,6 +13,7 @@ const url = `mongodb+srv://abunaswilliford:${password}@cluster0.4lwcdiv.mongodb.
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
 
+// Generating new notes //////////////////////////////////////
 // Mongoose schema validation
 const noteSchema = new mongoose.Schema({
   content: String,
@@ -29,7 +30,15 @@ const note = new Note({
   important: true,
 })
 
-note.save().then((result) => {
-  console.log('note saved!', result)
+// note.save().then((result) => {
+//   console.log('note saved!')
+//   mongoose.connection.close()
+// })
+
+// Fetching notes /////////////////////////////////////////////
+Note.find({}).then((result) => {
+  result.forEach((note) => {
+    console.log(note)
+  })
   mongoose.connection.close()
 })
