@@ -4,32 +4,31 @@ import Note from '../models/note.js'
 export const notesRouter = express.Router()
 
 // GET all notes
-notesRouter.get('/notes', async (req, res) => {
+notesRouter.get('/notes', async (req, res, next) => {
   try {
     const notes = await Note.find({})
     res.json(notes)
   } catch (error) {
-    console.error(error)
-    res.status(500).send('Server Error')
+    next(error)
   }
 })
 
 // GET single note by id
-notesRouter.get('/notes/:id', async (request, response) => {
+notesRouter.get('/notes/:id', async (request, response, next) => {
   try {
     const note = await Note.findById(request.params.id)
     if (note) {
       response.json(note)
     } else {
-      response.status(404).end()
+      response.status(404).json('Note not found.')
     }
   } catch (error) {
-    response.status(400).send({ error: error.message })
+    next(error)
   }
 })
 
 // POST create new note in MONGO DB
-notesRouter.post('/notes', async (request, response) => {
+notesRouter.post('/notes', async (request, response, next) => {
   const body = request.body
 
   if (!body.content) {
@@ -48,8 +47,7 @@ notesRouter.post('/notes', async (request, response) => {
     const savedNote = await note.save()
     response.status(201).json(savedNote)
   } catch (error) {
-    console.error(error)
-    response.status(500).send('Server Error')
+    next(error)
   }
 })
 
@@ -62,7 +60,7 @@ notesRouter.delete('/notes/:id', async (request, response) => {
       return response.status(404).json({ error: 'Note not found' })
     response.status(204).end()
   } catch (error) {
-    response.status(400).send({ error: error.message })
+    next(error)
   }
 })
 
@@ -81,6 +79,6 @@ notesRouter.put('/notes/:id', async (request, response) => {
 
     response.json(updatedNote)
   } catch (error) {
-    response.status(400).send({ error: error.message })
+    next(error)
   }
 })
