@@ -6,9 +6,9 @@ const app = express()
 const PORT = process.env.PORT || 3001
 
 // MIDDLEWARE
+app.use(express.static('dist'))
 app.use(express.json())
 app.use(cors())
-app.use(express.static('dist'))
 
 // ROUTES
 app.use('/api', notesRouter)
