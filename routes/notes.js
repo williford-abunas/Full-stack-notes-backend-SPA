@@ -70,7 +70,7 @@ notesRouter.put('/notes/:id', async (request, response) => {
     const updatedNote = await Note.findByIdAndUpdate(
       request.params.id,
       request.body,
-      { new: true, runValidators: true }
+      { new: true, runValidators: true, context: 'query' }
     )
 
     if (!updatedNote) {
