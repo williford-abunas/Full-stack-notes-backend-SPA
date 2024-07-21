@@ -1,6 +1,5 @@
 import express from 'express'
 import Note from '../models/note.js'
-import { body, validationResult } from 'express-validator'
 
 export const notesRouter = express.Router()
 
@@ -29,39 +28,22 @@ notesRouter.get('/notes/:id', async (request, response, next) => {
 })
 
 // POST create new note in MONGO DB
-notesRouter.post(
-  '/notes',
-  [
-    body('content')
-      .isLength({ min: 5 })
-      .withMessage('Content must be more than 5 characters.'),
-  ],
-  async (request, response, next) => {
-    const errors = validationResult(request)
-    if (!errors.isEmpty()) {
-      const error = new Error('Validation failed')
-      error.status = 400
-      error.details = errors.array()
-      return next(error)
-    }
+notesRouter.post('/notes', async (request, response, next) => {
+  const { content, important } = request.body
 
-    const { content, important } = request.body
+  const note = new Note({
+    content,
+    important: important || false,
+    date: new Date(),
+  })
 
-    const note = new Note({
-      content,
-      important: important || false,
-      date: new Date(),
-    })
-
-    try {
-      const savedNote = await note.save()
-      response.status(201).json(savedNote)
-    } catch (error) {
-      error.status = 500
-      next(error)
-    }
+  try {
+    const savedNote = await note.save()
+    response.status(201).json(savedNote)
+  } catch (error) {
+    next(error)
   }
-)
+})
 
 // DELETE single note by id
 notesRouter.delete('/notes/:id', async (request, response) => {
