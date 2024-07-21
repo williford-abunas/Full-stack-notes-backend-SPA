@@ -23,7 +23,7 @@ const errorHandler = (error, request, response, next) => {
   // Handle specific error types
   // Cast error (malformed ID)
   if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
+    return response.status(400).send({ error: 'Malformatted ID' })
   }
 
   // Validation error
