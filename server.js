@@ -40,7 +40,7 @@ const errorHandler = (error, request, response, next) => {
   }
 
   // Default error handler
-  res
+  response
     .status(error.status || 500)
     .json({ error: error.message || 'Internal server error' })
 
