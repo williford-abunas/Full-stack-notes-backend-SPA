@@ -45,9 +45,11 @@ notesRouter.post(
       return next(error)
     }
 
+    const { content, important } = request.body
+
     const note = new Note({
-      content: body.content,
-      important: body.important || false,
+      content,
+      important: important || false,
       date: new Date(),
     })
 
