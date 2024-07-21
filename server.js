@@ -20,6 +20,10 @@ const errorHandler = (error, request, response, next) => {
   if (response.headersSent) {
     return next(error)
   }
+
+  if (error.status === 400 && error.details) {
+    return response.status(400).json({errors: error.details})
+  }
   // Handle specific error types
   // Cast error (malformed ID)
   if (error.name === 'CastError') {
@@ -31,6 +35,7 @@ const errorHandler = (error, request, response, next) => {
     const validationErrors = Object.values(error.errors).map(
       (val) => val.message
     )
+    console.log(validationErrors)
     return response.status(400).json({ error: validationErrors })
   }
 
