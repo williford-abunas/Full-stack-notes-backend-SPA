@@ -64,7 +64,7 @@ notesRouter.post(
 )
 
 // DELETE single note by id
-notesRouter.delete('/notes/:id', async (request, response) => {
+notesRouter.delete('/notes/:id', async (request, response, next) => {
   try {
     const deletedNote = await Note.findByIdAndDelete(request.params.id)
 
@@ -77,7 +77,7 @@ notesRouter.delete('/notes/:id', async (request, response) => {
 })
 
 // UPDATE existing note
-notesRouter.put('/notes/:id', async (request, response) => {
+notesRouter.put('/notes/:id', async (request, response, next) => {
   try {
     const updatedNote = await Note.findByIdAndUpdate(
       request.params.id,
