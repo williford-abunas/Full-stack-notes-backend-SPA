@@ -21,6 +21,9 @@ const errorHandler = (error, request, response, next) => {
     return next(error)
   }
 
+  if (error.status === 400 && error.details) {
+    return response.status(400).json({errors: error.details})
+  }
   // Handle specific error types
   // Cast error (malformed ID)
   if (error.name === 'CastError') {
